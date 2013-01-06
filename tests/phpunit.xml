@@ -1,0 +1,7 @@
+<phpunit bootstrap="bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="PharCompiler Test Suite">
+            <directory>WT</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

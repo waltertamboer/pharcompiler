@@ -1,0 +1,24 @@
+{
+    "name": "waltertamboer/wtpharcompiler",
+    "description": "A PHAR compiler for PHP.",
+    "keywords": ["php", "phar", "compiler"],
+    "homepage": "https://github.com/waltertamboer/wtpharcompiler",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Walter Tamboer",
+            "email": "walter.tamboer@live.com",
+            "homepage": "http://waltertamboer.nl"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/finder": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "WT\\PharCompiler": "src/"
+        }
+    }
+}
