@@ -1,8 +1,8 @@
 {
-    "name": "waltertamboer/wtpharcompiler",
+    "name": "waltertamboer/pharcompiler",
     "description": "A PHAR compiler for PHP.",
     "keywords": ["php", "phar", "compiler"],
-    "homepage": "https://github.com/waltertamboer/wtpharcompiler",
+    "homepage": "https://github.com/WalterTamboer/pharcompiler",
     "type": "library",
     "license": "MIT",
     "authors": [
