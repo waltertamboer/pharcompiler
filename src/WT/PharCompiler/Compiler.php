@@ -24,7 +24,7 @@ class Compiler
 	
 	public function addFiles($path, $name = 'default')
 	{
-		$finder = $this->getFinder($name);
+		$finder = $this->getFinder($name, $path);
 		
 		return $finder->files()->in($path);
 	}
@@ -57,10 +57,13 @@ class Compiler
         return $this;
     }
 
-    private function getFinder($name)
+    private function getFinder($name, $path)
     {
         if (!array_key_exists($name, $this->finders)) {
-            $this->finders[$name] = new Finder();
+            $this->finders[$name] = array(
+				'path' => $path,
+				'finder' => new Finder(),
+			);
         }
         return $this->finders[$name];
     }
@@ -105,9 +108,9 @@ class Compiler
         $phar = $this->getPHAR();
         $phar->startBuffering();
 
-        foreach ($this->finders as $finder) {
-            foreach ($finder as $file) {
-                $this->addFile($phar, $file);
+        foreach ($this->finders as $data) {
+            foreach ($data['finder'] as $file) {
+                $this->addFile($phar, $file, $data['path']);
             }
         }
 
@@ -117,9 +120,9 @@ class Compiler
         unset($phar);
     }
 
-    private function addFile($phar, $file, $stripWhitespace = true)
+    private function addFile($phar, $file, $path, $stripWhitespace = true)
     {
-        $path = str_replace(dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR, '', $file->getRealPath());
+        $path = str_replace($path, '', $file->getRealPath());
 
         $content = file_get_contents($file);
 
