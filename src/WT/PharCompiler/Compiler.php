@@ -21,6 +21,13 @@ class Compiler
         $this->finders = array();
         $this->variables = array();
     }
+	
+	public function addFiles($path, $name = 'default')
+	{
+		$finder = $this->getFinder($name);
+		
+		return $finder->files()->in($path);
+	}
 
     public function getFullPath()
     {
@@ -50,7 +57,7 @@ class Compiler
         return $this;
     }
 
-    public function getFinder($name = 'default')
+    private function getFinder($name)
     {
         if (!array_key_exists($name, $this->finders)) {
             $this->finders[$name] = new Finder();
