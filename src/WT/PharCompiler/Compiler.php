@@ -24,7 +24,8 @@ class Compiler
 	
 	public function addFiles($path, $name = 'default')
 	{
-		$finder = $this->getFinder($name, $path);
+		$finderData = $this->getFinder($name, $path);
+		$finder = $finderData['finder'];
 		
 		return $finder->files()->in($path);
 	}
