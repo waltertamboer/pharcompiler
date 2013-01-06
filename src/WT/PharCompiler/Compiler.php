@@ -62,7 +62,7 @@ class Compiler
     {
         if (!array_key_exists($name, $this->finders)) {
             $this->finders[$name] = array(
-				'path' => $path,
+				'path' => realpath($path),
 				'finder' => new Finder(),
 			);
         }
