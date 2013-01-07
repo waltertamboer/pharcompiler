@@ -9,63 +9,55 @@ class CompilerTest extends PHPUnit_Framework_TestCase
 {
     protected function tearDown()
     {
-        $path = $this->getPharPath() . DIRECTORY_SEPARATOR . 'test.phar';
+        $path = $this->getPharPath();
         if (is_file($path)) {
             unlink($path);
         }
     }
 
-    private function getPharPath()
+    private function getPharPath($pharFile = 'test.phar')
     {
-        return __DIR__ . '/_assets';
-    }
-
-    private function createCompiler($outputPath = null)
-    {
-        if (!$outputPath) {
-            $outputPath = $this->getPharPath();
-        }
-        return new Compiler('test.phar', $outputPath);
+        return __DIR__ . DIRECTORY_SEPARATOR . '_assets' . DIRECTORY_SEPARATOR . $pharFile;
     }
 
     public function testGetFullPath()
     {
-        $compiler = $this->createCompiler('./output');
+        $compiler = new Compiler($this->getPharPath());
 
-        $this->assertSame('./output/test.phar', $compiler->getFullPath());
+        $this->assertSame($this->getPharPath(), $compiler->getFullPath());
     }
 
     public function testGetOutputName()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
 
         $this->assertSame('test.phar', $compiler->getOutputName());
     }
 
     public function testGetOutputNameNoExtension()
     {
-        $compiler = new Compiler('test');
+        $compiler = new Compiler($this->getPharPath('test'));
 
         $this->assertSame('test.phar', $compiler->getOutputName());
     }
 
     public function testGetOutputPath()
     {
-        $compiler = $this->createCompiler('./output');
+        $compiler = new Compiler($this->getPharPath());
 
-        $this->assertSame('./output', $compiler->getOutputPath());
+        $this->assertSame(dirname($this->getPharPath()), $compiler->getOutputPath());
     }
 
     public function testGetOutputPathWithEmptyConstructor()
     {
-        $compiler = $this->createCompiler('./output');
+        $compiler = new Compiler($this->getPharPath());
 
-        $this->assertSame('./output', $compiler->getOutputPath());
+        $this->assertSame(dirname($this->getPharPath()), $compiler->getOutputPath());
     }
 
     public function testGetExistingVariable()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
         $compiler->setVariable('TestVariable', 'TestValue');
 
         $this->assertSame('TestValue', $compiler->getVariable('TestVariable'));
@@ -73,14 +65,14 @@ class CompilerTest extends PHPUnit_Framework_TestCase
 
     public function testGetNonExistingVariable()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
 
         $this->assertSame(null, $compiler->getVariable('TestVariable'));
     }
 
     public function testGetVariables()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
         $compiler->setVariables(array(
             'TestVariable1' => 'TestValue1',
             'TestVariable2' => 'TestValue2',
@@ -92,7 +84,7 @@ class CompilerTest extends PHPUnit_Framework_TestCase
 
     public function testSetVariable()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
         $compiler->setVariable('TestVariable', 'TestValue');
 
         $this->assertArrayHasKey('TestVariable', $compiler->getVariables());
@@ -100,7 +92,7 @@ class CompilerTest extends PHPUnit_Framework_TestCase
 
     public function testSetVariables()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
         $compiler->setVariables(array(
             'TestVariable1' => 'TestValue1',
             'TestVariable2' => 'TestValue2',
@@ -112,10 +104,9 @@ class CompilerTest extends PHPUnit_Framework_TestCase
 
     public function testCompile()
     {
-        $compiler = $this->createCompiler();
+        $compiler = new Compiler($this->getPharPath());
         $compiler->compile();
-
-        $path = $this->getPharPath() . DIRECTORY_SEPARATOR . 'test.phar';
-        $this->assertFileExists($path);
+		
+        $this->assertFileExists($this->getPharPath());
     }
 }

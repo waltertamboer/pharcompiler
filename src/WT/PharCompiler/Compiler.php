@@ -14,17 +14,17 @@ class Compiler
     private $variables;
     private $phar;
 
-    public function __construct($outputName, $outputPath = null)
+    public function __construct($path)
     {
-        $this->outputName = $this->createOutputName($outputName);
-        $this->outputPath = $outputPath ? rtrim($outputPath, '/') : './output';
+        $this->outputName = $this->createOutputName($path);
+        $this->outputPath = realpath(dirname($path));
         $this->finders = array();
         $this->variables = array();
     }
 	
 	public function addFile($path, $name = 'default')
 	{
-		$finderData = $this->getFinder($name, dirname($path));
+		$finderData = $this->getFinder($name, dirname(realpath($path)));
 		$finder = $finderData['finder'];
 		
 		return $finder->files()->name($path);
@@ -40,7 +40,7 @@ class Compiler
 
     public function getFullPath()
     {
-        return $this->outputPath . '/' . $this->outputName;
+        return $this->outputPath . DIRECTORY_SEPARATOR . $this->outputName;
     }
 
     public function getVariable($name, $defaultValue = null)
@@ -101,7 +101,7 @@ class Compiler
         if (substr($outputName, -5) != '.phar') {
             $outputName .= '.phar';
         }
-        return $outputName;
+        return basename($outputName);
     }
 
     public function compile()
@@ -119,7 +119,7 @@ class Compiler
 
         foreach ($this->finders as $data) {
             foreach ($data['finder'] as $file) {
-                $this->addFile($phar, $file, $data['path']);
+                $this->addFileToPhar($phar, $file, $data['path']);
             }
         }
 
@@ -129,7 +129,7 @@ class Compiler
         unset($phar);
     }
 
-    private function addFile($phar, $file, $path, $stripWhitespace = true)
+    private function addFileToPhar($phar, $file, $path, $stripWhitespace = true)
     {
         $path = str_replace($path, '', $file->getRealPath());
 
