@@ -30,7 +30,7 @@ class Compiler
 		return $finder->files()->name($path);
 	}
 	
-	public function addFiles($path, $name = 'default')
+	public function addDirectory($path, $name = 'default')
 	{
 		$finderData = $this->getFinder($name, $path);
 		$finder = $finderData['finder'];
