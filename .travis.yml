@@ -8,5 +8,7 @@ php:
     - 5.4
 
 script:
+    - php composer.phar self-update
+    - php composer.phar install
     - phpunit -c tests/phpunit.xml
     
