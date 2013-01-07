@@ -22,6 +22,14 @@ class Compiler
         $this->variables = array();
     }
 	
+	public function addFile($path, $name = 'default')
+	{
+		$finderData = $this->getFinder($name, $path);
+		$finder = $finderData['finder'];
+		
+		return $finder->files()->name($path);
+	}
+	
 	public function addFiles($path, $name = 'default')
 	{
 		$finderData = $this->getFinder($name, $path);
