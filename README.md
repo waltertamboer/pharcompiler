@@ -44,7 +44,3 @@ $compiler->compile();
 
 echo 'Version: @package_version@';
 ```
-
-Real Life Example
------------------
-An real life example of how to use it can be seen here: https://github.com/pixelpolishers/resolver
